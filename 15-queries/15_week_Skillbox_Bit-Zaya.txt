@@ -1,0 +1,89 @@
+Задача 1
+SELECT orderNumber, productCode, quantityOrdered * priceEach as total FROM `orderdetails`
+ORDER BY total DESC
+LIMIT 10
+
+Задача 2
+SELECT orderNumber, SUM(quantityOrdered * priceEach) as total FROM `orderdetails`
+GROUP BY orderNumber 
+HAVING total > 59000
+ORDER BY total DESC
+
+Задача 3
+SELECT orderdetails.orderNumber, orderDate, status, SUM(quantityOrdered * priceEach) as total FROM `orderdetails`
+INNER JOIN `orders`
+ON orderdetails.orderNumber = orders.orderNumber
+GROUP BY orderdetails.orderNumber 
+HAVING total > 59000
+ORDER BY total DESC
+
+
+Задача 4
+SELECT 
+contactFirstName,
+contactLastName,
+Country,
+orderdetails.orderNumber, 
+orderDate, 
+status, 
+SUM(quantityOrdered * priceEach) as total 
+FROM `orderdetails`
+INNER JOIN `orders`
+ON orderdetails.orderNumber = orders.orderNumber
+INNER JOIN `customers`
+ON orders.customerNumber = customers.customerNumber
+GROUP BY orderdetails.orderNumber 
+HAVING total > 59000
+ORDER BY total DESC
+
+Задача 5
+productName, 
+SUM(quantityOrdered * priceEach) as total 
+FROM `orderdetails`
+INNER JOIN `products`
+ON orderdetails.productCode = products.productCode
+GROUP BY orderdetails.productCode
+ORDER BY total DESC
+LIMIT 10
+
+
+Задача 6
+SELECT 
+firstName,
+lastName,
+contactFirstName,
+contactLastName
+FROM `employees`
+LEFT JOIN `customers`
+ON customers.salesRepEmployeeNumber = employees.employeeNumber
+UNION
+SELECT 
+firstName,
+lastName,
+contactFirstName,
+contactLastName
+FROM `employees`
+RIGHT JOIN `customers`
+ON customers.salesRepEmployeeNumber = employees.employeeNumber
+
+
+Задача 7
+SELECT 
+tl1.firstName,
+tl1.lastName,
+tl1.jobTitle,
+tl2.firstName as subFirstName,
+tl2.lastName as subLastName
+FROM `employees` as tl1
+INNER JOIN `employees` as tl2
+ON tl1.reportsTo = tl2.employeeNumber
+UNION
+SELECT 
+tl1.firstName,
+tl1.lastName,
+tl1.jobTitle,
+tl2.firstName as subFirstName,
+tl2.lastName as subLastName
+FROM `employees` as tl1
+left JOIN `employees` as tl2
+ON tl1.reportsTo = tl2.employeeNumber
